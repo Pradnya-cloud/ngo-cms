@@ -1,0 +1,11 @@
+django-cors-headers
+django-environ
+django-filter
+djangorestframework
+djangorestframework-simplejwt
+django-cleanup
+mysqlclient
+Pillow
+python-dotenv
+gunicorn
+razorpay

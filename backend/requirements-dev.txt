@@ -1,0 +1,7 @@
+django-cors-headers
+django-filter
+djangorestframework
+djangorestframework-simplejwt
+django-cleanup
+Pillow
+python-dotenv
