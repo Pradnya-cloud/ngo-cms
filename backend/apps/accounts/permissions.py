@@ -15,3 +15,12 @@ class IsAdminOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return bool(request.user and request.user.is_authenticated and request.user.role == "admin")
+
+
+class CanCreateOrAdminOnly(BasePermission):
+    """Anyone can create (POST); only Admin can read, update, or delete."""
+
+    def has_permission(self, request, view):
+        if request.method == "POST":
+            return True
+        return bool(request.user and request.user.is_authenticated and request.user.role == "admin")

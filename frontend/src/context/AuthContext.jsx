@@ -3,8 +3,8 @@ import { apiLogin, apiLogout, apiRefreshToken } from "../utils/authApi";
 
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = "ngo_cms_auth";
-const INACTIVITY_LIMIT_MS = 15 * 60 * 1000;
+const STORAGE_KEY = "ngo_cms_auth"; // { access, refresh, user }
+const INACTIVITY_LIMIT_MS = 15 * 60 * 1000; // auto-logout after 15 minutes idle
 
 function readStoredAuth() {
   try {
@@ -16,7 +16,7 @@ function readStoredAuth() {
 }
 
 export function AuthProvider({ children }) {
-  const [auth, setAuth] = useState(readStoredAuth);
+  const [auth, setAuth] = useState(readStoredAuth); // { access, refresh, user } | null
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const inactivityTimer = useRef(null);
@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
     }
   }, [persist, auth]);
 
+  // Inactivity auto-logout: any user interaction resets the timer.
   useEffect(() => {
     if (!auth) return undefined;
 
@@ -55,6 +56,7 @@ export function AuthProvider({ children }) {
     };
   }, [auth, logout]);
 
+  // Periodically refresh the access token while a session is active.
   useEffect(() => {
     if (!auth) return undefined;
     const interval = setInterval(async () => {
@@ -64,7 +66,7 @@ export function AuthProvider({ children }) {
       } catch {
         logout();
       }
-    }, 10 * 60 * 1000);
+    }, 10 * 60 * 1000); // refresh every 10 minutes
     return () => clearInterval(interval);
   }, [auth, persist, logout]);
 
@@ -91,6 +93,7 @@ export function AuthProvider({ children }) {
       user: auth?.user ?? null,
       isAuthenticated: Boolean(auth?.user),
       role: auth?.user?.role ?? null,
+      accessToken: auth?.access ?? null,
       loading,
       error,
       login,

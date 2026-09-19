@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.enquiries.models import Enquiry
+from apps.enquiries.models import Enquiry, Subscription
 
 
 class EnquirySerializer(serializers.ModelSerializer):
@@ -13,3 +13,10 @@ class EnquiryPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enquiry
         fields = ["name", "email", "phone", "subject", "message", "enquiry_type"]
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ["id", "email", "confirmed", "created_at"]
+        read_only_fields = ["id", "confirmed", "created_at"]

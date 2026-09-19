@@ -1,3 +1,7 @@
+// Thin fetch wrapper shared by every real API call in the app.
+// Base URL comes from VITE_API_BASE_URL (see .env.example) so it's easy
+// to point at a deployed backend later without touching any call site.
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
 
 class ApiError extends Error {
@@ -29,6 +33,8 @@ async function request(path, { method = "GET", body, accessToken } = {}) {
   }
 
   if (!res.ok) {
+    // DRF error shapes vary: {detail: "..."} or {field: ["msg"]} — flatten
+    // into one readable string for the UI to show directly.
     const message =
       data?.detail ||
       (data && typeof data === "object" ? Object.values(data).flat().join(" ") : null) ||

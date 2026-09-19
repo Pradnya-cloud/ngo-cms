@@ -19,3 +19,16 @@ class Enquiry(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Subscription(models.Model):
+    email = models.EmailField(unique=True)
+    confirmed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "subscriptions"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.email

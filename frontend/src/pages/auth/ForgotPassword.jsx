@@ -1,15 +1,51 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthShell from "./AuthShell";
+import { apiForgotPassword } from "../../utils/authApi";
 
 export default function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | loading | sent
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("loading");
+    await apiForgotPassword({ email });
+    setStatus("sent");
+  }
+
+  if (status === "sent") {
+    return (
+      <AuthShell eyebrow="Admin Console" title="Check your email">
+        <p className="text-ink/70 leading-relaxed">
+          If an account exists for <strong>{email}</strong>, a password reset link is on its way.
+        </p>
+        <Link to="/admin/login" className="btn-secondary mt-6 inline-flex">Back to login</Link>
+      </AuthShell>
+    );
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-ink p-4">
-      <div className="w-full max-w-sm text-center">
-        <h1 className="mb-2 font-display text-2xl font-bold text-ivory">Forgot password</h1>
-        <p className="mb-6 text-sm text-ivory/60">Password reset is not yet configured. Use the admin login with your existing credentials.</p>
-        <Link to="/admin/login" className="inline-block rounded-sm bg-madder px-4 py-2 text-sm font-semibold text-ivory hover:bg-madder/90">
-          Back to login
-        </Link>
-      </div>
-    </div>
+    <AuthShell
+      eyebrow="Admin Console"
+      title="Reset your password"
+      subtitle="Enter your email and we'll send you a reset link."
+      footer={
+        <Link to="/admin/login" className="text-madder font-medium hover:underline">Back to login</Link>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="text-sm font-medium text-ink/80" htmlFor="email">Email</label>
+          <input
+            id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+            className="mt-1.5 w-full border border-ink/20 rounded-sm px-3 py-2.5 bg-white focus:border-indigo outline-none"
+          />
+        </div>
+        <button type="submit" disabled={status === "loading"} className="btn-primary w-full justify-center disabled:opacity-60">
+          {status === "loading" ? "Sending…" : "Send reset link"}
+        </button>
+      </form>
+    </AuthShell>
   );
 }

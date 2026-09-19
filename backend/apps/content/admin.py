@@ -1,11 +1,35 @@
 from django.contrib import admin
-from .models import PageContent
+from .models import Banner, VisionMission, Statistic, Initiative, PageContent
+
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ["title", "order", "status"]
+    list_filter = ["status"]
+    ordering = ["order"]
+
+
+@admin.register(VisionMission)
+class VisionMissionAdmin(admin.ModelAdmin):
+    list_display = ["vision_title", "mission_title", "last_updated"]
+
+
+@admin.register(Statistic)
+class StatisticAdmin(admin.ModelAdmin):
+    list_display = ["label", "value", "order", "status"]
+    list_filter = ["status"]
+    ordering = ["order"]
+
+
+@admin.register(Initiative)
+class InitiativeAdmin(admin.ModelAdmin):
+    list_display = ["title", "order", "status"]
+    list_filter = ["status"]
+    ordering = ["order"]
 
 
 @admin.register(PageContent)
 class PageContentAdmin(admin.ModelAdmin):
-    list_display = ["page_type", "section", "title", "sort_order", "status", "created_at"]
+    list_display = ["page_type", "section", "title", "status"]
     list_filter = ["page_type", "status"]
-    search_fields = ["title", "content"]
-    ordering = ["page_type", "sort_order"]
-    list_editable = ["sort_order", "status"]
+    search_fields = ["title", "section"]

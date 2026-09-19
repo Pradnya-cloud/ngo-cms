@@ -9,6 +9,12 @@
   body {
     @apply bg-ivory text-ink font-body antialiased;
   }
+  /* Headings default to indigo-deep (right for the ivory/white sections most
+     headings sit on). A className like text-ivory on an individual h1/h2
+     always wins — Tailwind's class selector has higher CSS specificity than
+     this bare-tag rule — but it must be added explicitly on any heading
+     inside a dark section (bg-indigo-deep, bg-madder); inheritance alone
+     won't do it, since this rule targets the tag directly. */
   h1, h2, h3, h4 {
     @apply font-display;
   }
@@ -27,6 +33,9 @@
 }
 
 @layer components {
+  /* Headings default to indigo (for light backgrounds), but any section
+     wrapper using text-ivory (dark hero/CTA/footer backgrounds) should let
+     its headings inherit that light color instead of staying indigo. */
   .text-ivory h1,
   .text-ivory h2,
   .text-ivory h3,

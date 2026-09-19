@@ -1,16 +1,19 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-export default function ProtectedRoute() {
-  const { isAuthenticated, loading } = useAuth();
+// Wrap any admin route with this. Pass allowedRoles to additionally
+// restrict by role (e.g. ["admin"]); omit it to just require login.
+export default function ProtectedRoute({ children, allowedRoles }) {
+  const { isAuthenticated, role } = useAuth();
+  const location = useLocation();
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-ivory">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-indigo border-t-transparent" />
-      </div>
-    );
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/admin/login" replace />;
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  return children;
 }

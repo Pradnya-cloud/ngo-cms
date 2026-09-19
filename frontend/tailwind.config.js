@@ -1,45 +1,37 @@
+/** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        ivory: {
-          DEFAULT: "#FAF7F2",
-          2: "#F3EFE8",
+        ivory: "#FBF6EC",
+        ivory2: "#F3EBD9",
+        ink: "#2B2620",
+        indigo: {
+          DEFAULT: "#2C4A6E",
+          deep: "#1D3350",
+          light: "#4B6D93",
         },
-        ink: "#1A1A2E",
-        indigo: "#3D5A80",
-        "indigo-deep": "#2C4A6E",
         marigold: {
           DEFAULT: "#E8A33D",
-          dark: "#D4912C",
-          light: "#F0B85C",
+          dark: "#C9821F",
+          light: "#F5C878",
         },
         madder: {
           DEFAULT: "#B23A48",
-          dark: "#8B2D3A",
+          dark: "#8E2C38",
         },
         sage: {
-          DEFAULT: "#6B8E5C",
-          dark: "#557348",
+          DEFAULT: "#5C7A5A",
+          dark: "#425B41",
         },
       },
       fontFamily: {
-        display: ["Playfair Display", "Georgia", "serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "Fira Code", "monospace"],
-      },
-      screens: {
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1536px',
+        display: ["'Bitter'", "serif"],
+        body: ["'Work Sans'", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "monospace"],
       },
     },
   },
   plugins: [],
-}
+};

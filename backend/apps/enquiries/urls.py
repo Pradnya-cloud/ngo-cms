@@ -4,4 +4,7 @@ from . import views
 router = DefaultRouter()
 router.register(r"", views.EnquiryViewSet, basename="enquiry")
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("newsletter/", views.SubscribeView.as_view(), name="newsletter-subscribe"),
+    *router.urls,
+]

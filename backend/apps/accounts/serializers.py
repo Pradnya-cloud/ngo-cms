@@ -22,10 +22,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data["email"],
-            username=validated_data["email"],
             password=validated_data["password"],
         )
         user.full_name = validated_data.get("full_name", "")
+        user.role = "editor"
         user.save()
         return user
 

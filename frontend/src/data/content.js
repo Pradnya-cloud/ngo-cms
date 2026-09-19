@@ -1,13 +1,14 @@
-// Central content store for NGO CMS - replaced by API data in production
+// Central content store for Umang Foundation.
+// In production this will be replaced by data fetched from the Django CMS API.
 
 export const org = {
   name: "Umang Foundation",
   tagline: "Threads of change, stitched by community.",
   shortDesc:
     "Umang Foundation works across education, healthcare and livelihood to build lasting opportunity for underprivileged children and communities across India.",
-  phone: "+91 98765 43210",
-  email: "connect@umangfoundation.org",
-  address: "14 Ashoka Marg, Kolhapur, Maharashtra 416003, India",
+  phone: "+91 9898989898",
+  email: "emailname@gmail.com",
+  address: "Address of the organization",
   social: {
     instagram: "https://instagram.com",
     facebook: "https://facebook.com",
