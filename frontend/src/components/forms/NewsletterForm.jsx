@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api, ApiError } from "../utils/apiClient";
+import { api, ApiError } from "../../utils/apiClient";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
