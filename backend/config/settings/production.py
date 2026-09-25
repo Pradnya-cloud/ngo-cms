@@ -1,12 +1,20 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    CORS_ALLOWED_ORIGINS=(list, []),
+)
+environ.Env.read_env(BASE_DIR / ".env")
+
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-DEBUG = False
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -63,8 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+# Use DATABASE_URL from Render (PostgreSQL) or fall back to MySQL env vars
 DATABASES = {
-    "default": {
+    "default": env.db("DATABASE_URL", default={
         "ENGINE": "django.db.backends.mysql",
         "NAME": os.environ.get("DB_NAME", "ngo_cms"),
         "USER": os.environ.get("DB_USER", "ngo_cms_user"),
@@ -72,7 +81,7 @@ DATABASES = {
         "HOST": os.environ.get("DB_HOST", "localhost"),
         "PORT": os.environ.get("DB_PORT", "3306"),
         "OPTIONS": {"charset": "utf8mb4"},
-    }
+    })
 }
 
 AUTH_USER_MODEL = "accounts.User"
@@ -114,7 +123,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
