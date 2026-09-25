@@ -71,18 +71,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Use DATABASE_URL from Render (PostgreSQL) or fall back to MySQL env vars
-DATABASES = {
-    "default": env.db("DATABASE_URL", default={
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DB_NAME", "ngo_cms"),
-        "USER": os.environ.get("DB_USER", "ngo_cms_user"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "3306"),
-        "OPTIONS": {"charset": "utf8mb4"},
-    })
-}
+# Use DATABASE_URL from Render (PostgreSQL) or fall back to MySQL
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    DATABASES = {"default": env.db_url("DATABASE_URL")}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.environ.get("DB_NAME", "ngo_cms"),
+            "USER": os.environ.get("DB_USER", "ngo_cms_user"),
+            "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+            "HOST": os.environ.get("DB_HOST", "localhost"),
+            "PORT": os.environ.get("DB_PORT", "3306"),
+            "OPTIONS": {"charset": "utf8mb4"},
+        }
+    }
 
 AUTH_USER_MODEL = "accounts.User"
 
